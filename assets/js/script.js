@@ -497,18 +497,14 @@ const scrollTop = function () {
 };
 scrollTop();
 
-const fetchNewBackground = (place) => {
-  const apiKey = "YOUR_GOOGLE_MAPS_API_KEY";
-  const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${place}&inputtype=textquery&fields=photos&key=${apiKey}`;
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      const photoReference = data.candidates[0].photos[0].photo_reference;
-      const imageUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference=${photoReference}&key=${apiKey}`;
-      const bgElement = document.getElementById("background");
-      bgElement.style.backgroundImage = `url(${imageUrl})`;
-    })
-    .catch((error) => console.error(error));
+const fetchNewBackground = async (place) => {
+  const apiKey = "YOUR_MAPMYINDIA_API_KEY";
+  const url = `https://api.mapmyindia.com/v3/places/search/json?query=${place}&region=IND&key=${apiKey}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  const imageUrl = `https://api.mapmyindia.com/v3/places/image/json?place_id=${data.data[0].place_id}&key=${apiKey}`;
+  const bgElement = document.getElementById("background");
+  bgElement.style.backgroundImage = `url(${imageUrl})`;
 };
 
 // Check if the browser supports the SpeechRecognition API
